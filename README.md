@@ -158,10 +158,9 @@ PixelMind/
 
 ## 👥 Contributors
 
-- Mohammed Faisar A - [MdFaisar]
-- Ram Kumar R - [rkcoder7]
-- Gowtham K - [Gowtham0614]
-- Rakshita K - [Rakshita-31]
+- Mohammed Faisar A 
+- Ram Kumar R 
+- Hariharan A
 
 ## 🙏 Acknowledgments
 
