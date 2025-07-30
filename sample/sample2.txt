@@ -1,0 +1,54 @@
+A single number that results from combining the three components of each vector in an
+RGB value is used to generate a pixel matrix. These pixel matrices are then merged to form a
+pixelated encrypted images. Moreover, users need to set an eight digit passkey. The passkey is
+used to generate a slotted frame, which is then hashed with SHA-256 to create a new pixelated
+image. The new image is then added to the existing images, these images are then
+converted/restructured one by one into another normal images so nobody can suspect it is an
+encrypted image. Then the converted images are ordered in a sequence in each page to create
+a PDF file. Finally, the data needs to be reversed to unlock the original file in a secure manner.
+A single number that results from combining the three components of each vector in an
+RGB value is used to generate a pixel matrix. These pixel matrices are then merged to form a
+pixelated encrypted images. Moreover, users need to set an eight digit passkey. The passkey is
+used to generate a slotted frame, which is then hashed with SHA-256 to create a new pixelated
+image. The new image is then added to the existing images, these images are then
+converted/restructured one by one into another normal images so nobody can suspect it is an
+encrypted image. Then the converted images are ordered in a sequence in each page to create
+a PDF file. Finally, the data needs to be reversed to unlock the original file in a secure manner.
+A single number that results from combining the three components of each vector in an
+RGB value is used to generate a pixel matrix. These pixel matrices are then merged to form a
+pixelated encrypted images. Moreover, users need to set an eight digit passkey. The passkey is
+used to generate a slotted frame, which is then hashed with SHA-256 to create a new pixelated
+image. The new image is then added to the existing images, these images are then
+converted/restructured one by one into another normal images so nobody can suspect it is an
+encrypted image. Then the converted images are ordered in a sequence in each page to create
+a PDF file. Finally, the data needs to be reversed to unlock the original file in a secure manner.
+A single number that results from combining the three components of each vector in an
+RGB value is used to generate a pixel matrix. These pixel matrices are then merged to form a
+pixelated encrypted images. Moreover, users need to set an eight digit passkey. The passkey is
+used to generate a slotted frame, which is then hashed with SHA-256 to create a new pixelated
+image. The new image is then added to the existing images, these images are then
+converted/restructured one by one into another normal images so nobody can suspect it is an
+encrypted image. Then the converted images are ordered in a sequence in each page to create
+a PDF file. Finally, the data needs to be reversed to unlock the original file in a secure manner.
+A single number that results from combining the three components of each vector in an
+RGB value is used to generate a pixel matrix. These pixel matrices are then merged to form a
+pixelated encrypted images. Moreover, users need to set an eight digit passkey. The passkey is
+used to generate a slotted frame, which is then hashed with SHA-256 to create a new pixelated
+image. The new image is then added to the existing images, these images are then
+converted/restructured one by one into another normal images so nobody can suspect it is an
+encrypted image. Then the converted images are ordered in a sequence in each page to create
+a PDF file. Finally, the data needs to be reversed to unlock the original file in a secure manner.
+A single number that results from combining the three components of each vector in an
+RGB value is used to generate a pixel matrix. These pixel matrices are then merged to form a
+pixelated encrypted images. Moreover, users need to set an eight digit passkey. The passkey is
+used to generate a slotted frame, which is then hashed with SHA-256 to create a new pixelated
+image. The new image is then added to the existing images, these images are then
+converted/restructured one by one into another normal images so nobody can suspect it is an
+encrypted image. Then the converted images are ordered in a sequence in each page to create
+a PDF file. Finally, the data needs to be reversed to unlock the original file in a secure manner.
+
+
+
+
+
+

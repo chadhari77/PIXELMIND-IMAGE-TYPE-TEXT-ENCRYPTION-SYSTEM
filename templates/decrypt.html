@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PixelMind - Decrypt Files</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./static/css/style.css">
+    <link rel="stylesheet" href="./static/css/chat.css">
+
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <i class="fas fa-shield-alt"></i>
+            <div>Pixel<span class="logo-highlight">Mind</span></div>
+        </div>
+        <div class="nav-links">
+            <a href="/" class="nav-link">Home</a>
+            <a href="/encrypt" class="nav-link">Encrypt</a>
+            <a href="/decrypt" class="nav-link active">Decrypt</a>
+            <a href="#" class="nav-link" onclick="logout()">Logout</a>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-unlock-alt"></i>
+                File Decryption
+            </div>
+            <div class="card-body">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="flash-message flash-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="file">Select Encrypted PDF</label>
+                        <div class="file-upload">
+                            <i class="fas fa-file-pdf animate-pulse"></i>
+                            <div class="file-upload-text">Drag & Drop PDF here</div>
+                            <div class="file-upload-desc">or click to browse files</div>
+                            <input type="file" name="file" id="file" accept=".pdf" required>
+                        </div>
+                        <div class="file-list" id="pdf-file-list" style="display: none;">
+                            <!-- PDF file will be listed here dynamically -->
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 2rem;">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-unlock-alt"></i> Decrypt File
+                        </button>
+                        <button type="reset" class="btn btn-secondary" style="margin-left: 1rem;">
+                            <i class="fas fa-redo"></i> Reset
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="logo" style="justify-content: center; margin-bottom: 1rem;">
+                <i class="fas fa-shield-alt"></i>
+                <div>Pixel<span class="logo-highlight">Mind</span></div>
+            </div>
+            <div class="footer-links">
+                <a href="#" class="footer-link">Privacy Policy</a>
+                <a href="#" class="footer-link">Terms of Service</a>
+                <a href="#" class="footer-link">Contact Us</a>
+                <a href="#" class="footer-link">Help & Support</a>
+            </div>
+            <div class="copyright">
+                &copy; 2025 PixelMind. All rights reserved.
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // Handle file upload display
+        document.getElementById('file').addEventListener('change', function(e) {
+            const fileList = document.getElementById('pdf-file-list');
+            fileList.innerHTML = '';
+            fileList.style.display = 'block';
+            
+            if (this.files.length > 0) {
+                const file = this.files[0];
+                const fileSize = (file.size / 1024).toFixed(2) + ' KB';
+                
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                fileItem.innerHTML = `
+                    <i class="fas fa-file-pdf file-icon"></i>
+                    <div class="file-name">${file.name}</div>
+                    <div class="file-size">${fileSize}</div>
+                    <button type="button" class="remove-file" data-index="0">
+                        <i class="fas fa-times"></i>
+                    </button>
+                `;
+                fileList.appendChild(fileItem);
+            }
+        });
+        
+        // Handle file removal
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.remove-file')) {
+                const button = e.target.closest('.remove-file');
+                const fileList = button.closest('.file-list');
+                button.closest('.file-item').remove();
+                
+                if (fileList.children.length === 0) {
+                    fileList.style.display = 'none';
+                }
+            }
+        });
+        
+        // Handle logout
+        function logout() {
+            window.location.href = '/logout';
+        }
+    </script>
+
+    <!-- Chat Button -->
+<div class="chat-button" id="chatButton">
+    <i class="fas fa-comment"></i>
+</div>
+
+<!-- Chat Container -->
+<div class="chat-container" id="chatContainer">
+    <div class="chat-header">
+        <div class="chat-title">
+            <i class="fas fa-robot"></i>
+            <span>PixelMind Assistant</span>
+        </div>
+        <button class="chat-close" id="chatClose">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+        <div class="message bot-message">
+            Hello! I'm your PixelMind assistant. How can I help you with text encryption today?
+        </div>
+    </div>
+    <div class="chat-input-container">
+        <input type="text" class="chat-input" id="chatInput" placeholder="Type a message..." autocomplete="off">
+        <button class="chat-send" id="chatSend">
+            <i class="fas fa-paper-plane"></i>
+        </button>
+    </div>
+</div>
+
+<!-- Chat JavaScript -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const chatButton = document.getElementById('chatButton');
+        const chatContainer = document.getElementById('chatContainer');
+        const chatClose = document.getElementById('chatClose');
+        const chatInput = document.getElementById('chatInput');
+        const chatSend = document.getElementById('chatSend');
+        const chatMessages = document.getElementById('chatMessages');
+        
+        // Toggle chat window
+        chatButton.addEventListener('click', function() {
+            chatContainer.classList.add('active');
+            chatInput.focus();
+        });
+        
+        chatClose.addEventListener('click', function() {
+            chatContainer.classList.remove('active');
+        });
+        
+        // Send message function
+        function sendMessage() {
+            const message = chatInput.value.trim();
+            if (message === '') return;
+            
+            // Add user message to chat
+            appendMessage('user', message);
+            chatInput.value = '';
+            
+            // Show typing indicator
+            const typingIndicator = document.createElement('div');
+            typingIndicator.className = 'typing-indicator';
+            typingIndicator.innerHTML = '<span></span><span></span><span></span>';
+            chatMessages.appendChild(typingIndicator);
+            
+            // Scroll to bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            // Call API for response
+            fetch('/api/chatbot', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ message: message })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Remove typing indicator
+                chatMessages.removeChild(typingIndicator);
+                
+                // Add bot response
+                appendMessage('bot', data.response);
+            })
+            .catch(error => {
+                // Remove typing indicator
+                chatMessages.removeChild(typingIndicator);
+                
+                // Add error message
+                appendMessage('bot', 'Sorry, there was an error processing your request. Please try again.');
+                console.error('Error:', error);
+            });
+        }
+        
+        // Append a message to the chat
+        function appendMessage(sender, text) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = sender === 'user' ? 'message user-message' : 'message bot-message';
+            messageDiv.textContent = text;
+            
+            chatMessages.appendChild(messageDiv);
+            
+            // Scroll to bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        // Event listeners for sending messages
+        chatSend.addEventListener('click', sendMessage);
+        
+        chatInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    });
+</script>
+</body>
+</html>

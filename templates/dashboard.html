@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PixelMind - Text Encryption System</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./static/css/style.css">
+    <link rel="stylesheet" href="./static/css/chat.css">
+
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <i class="fas fa-shield-alt"></i>
+            <div>Pixel<span class="logo-highlight">Mind</span></div>
+        </div>
+        <div class="nav-links">
+            <a href="/" class="nav-link active">Home</a>
+            <a href="/encrypt" class="nav-link">Encrypt</a>
+            <a href="/decrypt" class="nav-link">Decrypt</a>
+            <a href="#" class="nav-link" onclick="logout()">Logout</a>
+        </div>
+    </div>
+    
+    <div class="container">
+        <!-- Dashboard Content -->
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-tachometer-alt"></i>
+                Dashboard
+            </div>
+            <div class="card-body">
+                <h2>Welcome to PixelMind!</h2>
+                <p style="margin-top: 1rem; margin-bottom: 1.5rem;">
+                    It's an dvanced text encryption system that converts your sensitive text into innocent-looking images.
+                    Choose an option below to get started.
+                </p>
+                
+                <div class="features">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <h3 class="feature-title">Encrypt Files</h3>
+                        <p class="feature-desc">
+                            Convert your text files into encrypted images and compile them into secure PDF documents.
+                        </p>
+                        <a href="/encrypt" class="btn btn-primary" style="margin-top: 1rem;">
+                            <i class="fas fa-lock"></i> Start Encrypting
+                        </a>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-unlock-alt"></i>
+                        </div>
+                        <h3 class="feature-title">Decrypt Files</h3>
+                        <p class="feature-desc">
+                            Reverse the encryption process and retrieve your original text files from encrypted PDFs.
+                        </p>
+                        <a href="/decrypt" class="btn btn-primary" style="margin-top: 1rem;">
+                            <i class="fas fa-unlock-alt"></i> Start Decrypting
+                        </a>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3 class="feature-title">Activity Log</h3>
+                        <p class="feature-desc">
+                            View your recent encryption and decryption activity with detailed logs in this Activity Log .
+                        </p>
+                        <!-- Find this in your dashboard.html and replace the existing "View Activity" button -->
+<a href="/activity" class="btn btn-primary" style="margin-top: 1rem;">
+    <i class="fas fa-history"></i> View Activity
+</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="logo" style="justify-content: center; margin-bottom: 1rem;">
+                <i class="fas fa-shield-alt"></i>
+                <div>Pixel<span class="logo-highlight">Mind</span></div>
+            </div>
+            <div class="footer-links">
+                <a href="#" class="footer-link">Privacy Policy</a>
+                <a href="#" class="footer-link">Terms of Service</a>
+                <a href="#" class="footer-link">Contact Us</a>
+                <a href="#" class="footer-link">Help & Support</a>
+            </div>
+            <div class="copyright">
+                &copy; 2025 PixelMind. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    
+    <script>
+        // Handle page navigation
+        function showPage(pageId) {
+            // Hide all cards
+            document.getElementById('encrypt-card').style.display = 'none';
+            document.getElementById('decrypt-card').style.display = 'none';
+            document.getElementById('encrypt-success-card').style.display = 'none';
+            document.getElementById('decrypt-success-card').style.display = 'none';
+            
+            // Show the requested card
+            if (pageId) {
+                document.getElementById(pageId).style.display = 'block';
+            }
+            
+            // Update active link
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '/' && pageId === null) {
+                    link.classList.add('active');
+                } else if (link.getAttribute('href') === '/encrypt' && pageId === 'encrypt-card') {
+                    link.classList.add('active');
+                } else if (link.getAttribute('href') === '/decrypt' && pageId === 'decrypt-card') {
+                    link.classList.add('active');
+                }
+            });
+        }
+        
+        // Handle logout
+        function logout() {
+            window.location.href = '/logout';
+        }
+        
+        // Initialize based on current URL
+        document.addEventListener('DOMContentLoaded', function() {
+            const path = window.location.pathname;
+            if (path === '/encrypt') {
+                showPage('encrypt-card');
+            } else if (path === '/decrypt') {
+                showPage('decrypt-card');
+            } else if (path === '/encrypt_success') {
+                showPage('encrypt-success-card');
+            } else if (path === '/decrypt_success') {
+                showPage('decrypt-success-card');
+            } else {
+                showPage(null); // Dashboard is default
+            }
+            
+            // Add event delegation for file removal
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.remove-file')) {
+                    const button = e.target.closest('.remove-file');
+                    const fileList = button.closest('.file-list');
+                    button.closest('.file-item').remove();
+                    
+                    if (fileList.children.length === 0) {
+                        fileList.style.display = 'none';
+                    }
+                }
+            });
+        });
+    </script>
+
+    <!-- Chat Button -->
+<div class="chat-button" id="chatButton">
+    <i class="fas fa-comment"></i>
+</div>
+
+<!-- Chat Container -->
+<div class="chat-container" id="chatContainer">
+    <div class="chat-header">
+        <div class="chat-title">
+            <i class="fas fa-robot"></i>
+            <span>PixelMind Assistant</span>
+        </div>
+        <button class="chat-close" id="chatClose">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+        <div class="message bot-message">
+            Hello! I'm your PixelMind assistant. How can I help you with text encryption today?
+        </div>
+    </div>
+    <div class="chat-input-container">
+        <input type="text" class="chat-input" id="chatInput" placeholder="Type a message..." autocomplete="off">
+        <button class="chat-send" id="chatSend">
+            <i class="fas fa-paper-plane"></i>
+        </button>
+    </div>
+</div>
+
+<!-- Chat JavaScript -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const chatButton = document.getElementById('chatButton');
+        const chatContainer = document.getElementById('chatContainer');
+        const chatClose = document.getElementById('chatClose');
+        const chatInput = document.getElementById('chatInput');
+        const chatSend = document.getElementById('chatSend');
+        const chatMessages = document.getElementById('chatMessages');
+        
+        // Toggle chat window
+        chatButton.addEventListener('click', function() {
+            chatContainer.classList.add('active');
+            chatInput.focus();
+        });
+        
+        chatClose.addEventListener('click', function() {
+            chatContainer.classList.remove('active');
+        });
+        
+        // Send message function
+        function sendMessage() {
+            const message = chatInput.value.trim();
+            if (message === '') return;
+            
+            // Add user message to chat
+            appendMessage('user', message);
+            chatInput.value = '';
+            
+            // Show typing indicator
+            const typingIndicator = document.createElement('div');
+            typingIndicator.className = 'typing-indicator';
+            typingIndicator.innerHTML = '<span></span><span></span><span></span>';
+            chatMessages.appendChild(typingIndicator);
+            
+            // Scroll to bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            // Call API for response
+            fetch('/api/chatbot', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ message: message })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Remove typing indicator
+                chatMessages.removeChild(typingIndicator);
+                
+                // Add bot response
+                appendMessage('bot', data.response);
+            })
+            .catch(error => {
+                // Remove typing indicator
+                chatMessages.removeChild(typingIndicator);
+                
+                // Add error message
+                appendMessage('bot', 'Sorry, there was an error processing your request. Please try again.');
+                console.error('Error:', error);
+            });
+        }
+        
+        // Append a message to the chat
+        function appendMessage(sender, text) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = sender === 'user' ? 'message user-message' : 'message bot-message';
+            
+            // Convert **text** to <strong>text</strong> for bold formatting
+            if (sender === 'bot') {
+                // Replace **text** with <strong>text</strong>
+                const formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                messageDiv.innerHTML = formattedText;
+            } else {
+                // For user messages, use textContent for security
+                messageDiv.textContent = text;
+            }
+            
+            chatMessages.appendChild(messageDiv);
+            
+            // Scroll to bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        // Event listeners for sending messages
+        chatSend.addEventListener('click', sendMessage);
+        
+        chatInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    });
+</script>
+</body>
+</html>

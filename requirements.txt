@@ -1,0 +1,12 @@
+pyaes
+fpdf
+PyPDF2
+pdf2image
+pymupdf
+pymongo==4.3.3
+dotenv
+flask
+requests
+secrets
+fitz
+frontend

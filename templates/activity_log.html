@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activity Log - PixelMind</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./static/css/style.css">
+    <link rel="stylesheet" href="./static/css/chat.css">
+    <style>
+        .activity-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        
+        .activity-table th, .activity-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .activity-table th {
+            background-color: #f5f5f5;
+            font-weight: 600;
+        }
+        
+        .activity-table tr:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .action-encrypt {
+            color: #2E8B57;
+        }
+        
+        .action-decrypt {
+            color: #4169E1;
+        }
+        
+        .empty-activities {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+        }
+        
+        .filter-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .search-box {
+            display: flex;
+            align-items: center;
+            background-color: #f5f5f5;
+            border-radius: 4px;
+            padding: 0.5rem;
+            width: 300px;
+        }
+        
+        .search-box input {
+            border: none;
+            background: transparent;
+            margin-left: 0.5rem;
+            flex: 1;
+            outline: none;
+        }
+        
+        .filter-dropdown select {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <i class="fas fa-shield-alt"></i>
+            <div>Pixel<span class="logo-highlight">Mind</span></div>
+        </div>
+        <div class="nav-links">
+            <a href="/" class="nav-link">Home</a>
+            <a href="/encrypt" class="nav-link">Encrypt</a>
+            <a href="/decrypt" class="nav-link">Decrypt</a>
+            <a href="/activity" class="nav-link active">Activity</a>
+            <a href="#" class="nav-link" onclick="logout()">Logout</a>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-history"></i>
+                Activity Log
+            </div>
+            <div class="card-body">
+                <h2>Your Activity History</h2>
+                <p>View a detailed log of your encryption and decryption activities.</p>
+                
+                <div class="filter-controls">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="Search by filename...">
+                    </div>
+                    
+                    <div class="filter-dropdown">
+                        <select id="actionFilter">
+                            <option value="all">All Activities</option>
+                            <option value="encrypt">Encryption Only</option>
+                            <option value="decrypt">Decryption Only</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table class="activity-table" id="activityTable">
+                        <thead>
+                            <tr>
+                                <th>Date & Time</th>
+                                <th>Action</th>
+                                <th>Filename</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if activities %}
+                                {% for activity in activities %}
+                                <tr data-action="{{ activity.action_type }}">
+                                    <td>{{ activity.timestamp_str }}</td>
+                                    <td>
+                                        {% if activity.action_type == 'encrypt' %}
+                                            <span class="action-encrypt"><i class="fas fa-lock"></i> Encryption</span>
+                                        {% else %}
+                                            <span class="action-decrypt"><i class="fas fa-unlock-alt"></i> Decryption</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ activity.filename }}</td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="3" class="empty-activities">
+                                        <i class="fas fa-info-circle"></i> No activities found. Try encrypting or decrypting files.
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="logo" style="justify-content: center; margin-bottom: 1rem;">
+                <i class="fas fa-shield-alt"></i>
+                <div>Pixel<span class="logo-highlight">Mind</span></div>
+            </div>
+            <div class="footer-links">
+                <a href="#" class="footer-link">Privacy Policy</a>
+                <a href="#" class="footer-link">Terms of Service</a>
+                <a href="#" class="footer-link">Contact Us</a>
+                <a href="#" class="footer-link">Help & Support</a>
+            </div>
+            <div class="copyright">
+                &copy; 2025 PixelMind. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Chat Button -->
+    <div class="chat-button" id="chatButton">
+        <i class="fas fa-comment"></i>
+    </div>
+
+    <!-- Chat Container -->
+    <div class="chat-container" id="chatContainer">
+        <div class="chat-header">
+            <div class="chat-title">
+                <i class="fas fa-robot"></i>
+                <span>PixelMind Assistant</span>
+            </div>
+            <button class="chat-close" id="chatClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="message bot-message">
+                Hello! I'm your PixelMind assistant. How can I help you with text encryption today?
+            </div>
+        </div>
+        <div class="chat-input-container">
+            <input type="text" class="chat-input" id="chatInput" placeholder="Type a message..." autocomplete="off">
+            <button class="chat-send" id="chatSend">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+    
+    <script>
+        // Handle logout
+        function logout() {
+            window.location.href = '/logout';
+        }
+        
+        // Search and filter functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchInput');
+            const actionFilter = document.getElementById('actionFilter');
+            const activityTable = document.getElementById('activityTable');
+            const tableRows = activityTable.querySelectorAll('tbody tr');
+            
+            function filterTable() {
+                const searchText = searchInput.value.toLowerCase();
+                const filterValue = actionFilter.value;
+                
+                tableRows.forEach(row => {
+                    const fileName = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+                    const actionType = row.getAttribute('data-action');
+                    
+                    const matchesSearch = fileName.includes(searchText);
+                    const matchesFilter = filterValue === 'all' || actionType === filterValue;
+                    
+                    if (matchesSearch && matchesFilter) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+                
+                // Check if any rows are visible
+                let anyVisible = false;
+                tableRows.forEach(row => {
+                    if (row.style.display !== 'none') {
+                        anyVisible = true;
+                    }
+                });
+                
+                // If no rows are visible, show a message
+                let noResultsRow = activityTable.querySelector('.no-results-row');
+                if (!anyVisible && !noResultsRow) {
+                    const tbody = activityTable.querySelector('tbody');
+                    noResultsRow = document.createElement('tr');
+                    noResultsRow.className = 'no-results-row';
+                    noResultsRow.innerHTML = `
+                        <td colspan="3" class="empty-activities">
+                            <i class="fas fa-search"></i> No matching activities found
+                        </td>
+                    `;
+                    tbody.appendChild(noResultsRow);
+                } else if (anyVisible && noResultsRow) {
+                    noResultsRow.remove();
+                }
+            }
+            
+            searchInput.addEventListener('input', filterTable);
+            actionFilter.addEventListener('change', filterTable);
+        });
+        
+        // Chat functionality (copied from your existing code)
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatButton = document.getElementById('chatButton');
+            const chatContainer = document.getElementById('chatContainer');
+            const chatClose = document.getElementById('chatClose');
+            const chatInput = document.getElementById('chatInput');
+            const chatSend = document.getElementById('chatSend');
+            const chatMessages = document.getElementById('chatMessages');
+            
+            // Toggle chat window
+            chatButton.addEventListener('click', function() {
+                chatContainer.classList.add('active');
+                chatInput.focus();
+            });
+            
+            chatClose.addEventListener('click', function() {
+                chatContainer.classList.remove('active');
+            });
+            
+            // Send message function
+            function sendMessage() {
+                const message = chatInput.value.trim();
+                if (message === '') return;
+                
+                // Add user message to chat
+                appendMessage('user', message);
+                chatInput.value = '';
+                
+                // Show typing indicator
+                const typingIndicator = document.createElement('div');
+                typingIndicator.className = 'typing-indicator';
+                typingIndicator.innerHTML = '<span></span><span></span><span></span>';
+                chatMessages.appendChild(typingIndicator);
+                
+                // Scroll to bottom
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                
+                // Call API for response
+                fetch('/api/chatbot', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message: message })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Remove typing indicator
+                    chatMessages.removeChild(typingIndicator);
+                    
+                    // Add bot response
+                    appendMessage('bot', data.response);
+                })
+                .catch(error => {
+                    // Remove typing indicator
+                    chatMessages.removeChild(typingIndicator);
+                    
+                    // Add error message
+                    appendMessage('bot', 'Sorry, there was an error processing your request. Please try again.');
+                    console.error('Error:', error);
+                });
+            }
+            
+            // Append a message to the chat
+            function appendMessage(sender, text) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = sender === 'user' ? 'message user-message' : 'message bot-message';
+                
+                // Convert **text** to <strong>text</strong> for bold formatting
+                if (sender === 'bot') {
+                    // Replace **text** with <strong>text</strong>
+                    const formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                    messageDiv.innerHTML = formattedText;
+                } else {
+                    // For user messages, use textContent for security
+                    messageDiv.textContent = text;
+                }
+                
+                chatMessages.appendChild(messageDiv);
+                
+                // Scroll to bottom
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            // Event listeners for sending messages
+            chatSend.addEventListener('click', sendMessage);
+            
+            chatInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
